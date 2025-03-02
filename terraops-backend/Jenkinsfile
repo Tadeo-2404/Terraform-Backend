@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(name: 'build_container', defaultValue: false, description: 'Set to true to build the container')
+        booleanParam(name: 'run_container', defaultValue: false, description: 'Set to true to run the container')
+        booleanParam(name: 'deploy_container', defaultValue: false, description: 'Set to true to deploy the container')
+    }
+
+    tools {
+        maven 'maven'
+    }
+
+    stages {
+        stage('Set Up') {
+            steps {
+                sh "docker stop post-service || true"
+                sh "docker rm post-service || true"
+            }
+        }
+
+        stage('Build Docker Image') {
+            when { expression { params.build_container } }
+            steps {
+                dir("post-service") {
+                    sh "docker build -t post-service ."
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            when { expression { params.run_container } }
+            steps {
+                dir("post-service") {
+                    sh "docker run -d --name post-service -p 8090:8090 post-service"
+                }
+            }
+        }
+
+        stage('Deploy Docker Container') {
+            when { expression { params.deploy_container } }
+            steps {
+                dir("post-service") {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD'
+                    sh 'docker tag post-service:latest pelusa0303/post-service:latest'
+                    sh 'docker push pelusa0303/post-service:latest'
+                    }
+                }
+            }
+        }
+    }
+}
