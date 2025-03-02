@@ -1,10 +1,10 @@
-package com.terraops.terraops_backend.service;
+package post.service.post_service.service;
 
 import java.sql.Timestamp;
 
-import com.terraops.terraops_backend.models.ResponseHttp;
-import com.terraops.terraops_backend.utils.PostCreateRequest;
-import com.terraops.terraops_backend.utils.PostEditRequest;
+import post.service.post_service.models.ResponseHttp;
+import post.service.post_service.utils.PostCreateRequest;
+import post.service.post_service.utils.PostEditRequest;
 
 public interface PostService {
     ResponseHttp createPost(PostCreateRequest postCreateRequest);

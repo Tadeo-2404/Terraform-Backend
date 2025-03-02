@@ -1,15 +1,16 @@
-package com.terraops.terraops_backend.serviceImpl;
+package post.service.post_service.serviceImpl;
 
 import java.sql.Timestamp;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.terraops.terraops_backend.models.ResponseHttp;
-import com.terraops.terraops_backend.repository.PostRepository;
-import com.terraops.terraops_backend.service.PostService;
-import com.terraops.terraops_backend.utils.PostCreateRequest;
-import com.terraops.terraops_backend.utils.PostEditRequest;
+import post.service.post_service.models.ResponseHttp;
+import post.service.post_service.repository.PostRepository;
+import post.service.post_service.service.PostService;
+import post.service.post_service.utils.PostCreateRequest;
+import post.service.post_service.utils.PostEditRequest;
+
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;

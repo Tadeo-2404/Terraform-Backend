@@ -1,12 +1,12 @@
-package com.terraops.terraops_backend.controller;
+package post.service.post_service.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.terraops.terraops_backend.models.ResponseHttp;
-import com.terraops.terraops_backend.serviceImpl.PostServiceImpl;
-import com.terraops.terraops_backend.utils.PostCreateRequest;
-import com.terraops.terraops_backend.utils.PostEditRequest;
+import post.service.post_service.models.ResponseHttp;
+import post.service.post_service.serviceImpl.PostServiceImpl;
+import post.service.post_service.utils.PostCreateRequest;
+import post.service.post_service.utils.PostEditRequest;
 
 import io.swagger.annotations.ApiOperation;
 

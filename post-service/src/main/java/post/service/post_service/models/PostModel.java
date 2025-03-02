@@ -1,4 +1,4 @@
-package com.terraops.terraops_backend.models;
+package post.service.post_service.models;
 
 import java.sql.Timestamp;
 

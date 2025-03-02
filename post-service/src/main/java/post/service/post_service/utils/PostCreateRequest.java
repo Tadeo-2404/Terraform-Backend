@@ -1,4 +1,4 @@
-package com.terraops.terraops_backend.utils;
+package post.service.post_service.utils;
 
 import java.sql.Timestamp;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PostEditRequest {
+public class PostCreateRequest {
     private String title;
     private String description;
     private Timestamp date; 
