@@ -31,6 +31,12 @@ public class PostController {
         this.postServiceImpl = postServiceImpl;
     }
 
+    @GetMapping("/get-all")
+    @ApiOperation(value = "Retrieve post object", notes = "get method")
+    public ResponseEntity<ResponseHttp> getAllPosts() {
+        return new ResponseEntity<>(postServiceImpl.getAllPost(), HttpStatus.OK);
+    }
+
     @GetMapping("/get-post")
     @ApiOperation(value = "Retrieve post object", notes = "get method")
     public ResponseEntity<ResponseHttp> searchPostByAttribute(@Param("id") String ID, @Param("title") String title, @Param("date") String date,  @Param("category") String category) {

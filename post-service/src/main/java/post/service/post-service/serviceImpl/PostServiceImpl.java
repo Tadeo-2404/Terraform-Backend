@@ -2,6 +2,7 @@ package com.terraops.terraops_backend.serviceImpl;
 
 import java.sql.Timestamp;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.terraops.terraops_backend.models.ResponseHttp;
@@ -38,6 +39,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public ResponseHttp searchPostByAttribute(Long postID, String title, Timestamp date, String category) {
         ResponseHttp responseHttp = new ResponseHttp();
+        return responseHttp;
+    }
+
+    @Override
+    public ResponseHttp getAllPost() {
+        ResponseHttp responseHttp = new ResponseHttp();
+        responseHttp.setStatus(HttpStatus.OK);
+        responseHttp.setMessage("Success");
+        responseHttp.setResponse(postRepository.findAll());
         return responseHttp;
     }
 }

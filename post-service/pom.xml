@@ -8,10 +8,10 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.terraops</groupId>
-	<artifactId>terraops-backend</artifactId>
+	<groupId>post.service</groupId>
+	<artifactId>post-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>terraops-backend</name>
+	<name>post-service</name>
 	<description>TerraOps project</description>
 	<url/>
 	<licenses>
@@ -55,10 +55,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-           <groupId>org.postgresql</groupId>
-           <artifactId>postgresql</artifactId>
-		   <scope>runtime</scope>
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.6.0</version>
        </dependency>
        <dependency>
           <groupId>io.springfox</groupId>

@@ -11,4 +11,5 @@ public interface PostService {
     ResponseHttp editPost(PostEditRequest postEditRequest);
     ResponseHttp deletePost(Long postID);
     ResponseHttp searchPostByAttribute(Long postID, String title, Timestamp date, String category);
+    ResponseHttp getAllPost();
 }
