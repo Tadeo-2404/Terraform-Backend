@@ -4,5 +4,5 @@ COPY . .
 RUN ["mvn", "clean", "package", "-DskipTests"]
 
 FROM amazoncorretto:21
-COPY --from=builder /workspace/app/target/terraops-backend-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /workspace/app/target/post-service-0.0.1-SNAPSHOT.jar app.jar
 CMD ["java", "-jar", "app.jar"]
