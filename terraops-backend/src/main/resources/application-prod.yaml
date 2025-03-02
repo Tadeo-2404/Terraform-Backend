@@ -2,13 +2,10 @@ spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:postgresql://${DB_SERVER:}:${DB_PORT:5432}/${DB_NAME:}
-    username: ${POSTGRES_USER:}
-    password: ${POSTGRES_PASSWORD:}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver  
-  config:
-    activate:
-      on-profile: "prod"
   jpa: 
     show-sql: true
     properties:

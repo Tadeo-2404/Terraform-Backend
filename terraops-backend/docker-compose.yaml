@@ -1,0 +1,45 @@
+services:
+  postgresql:
+    container_name: postgresql-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-volume:/data/db
+    networks:
+      - post-service-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  post:
+    container_name: post-service
+    build:
+      context: ../post-service
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_APPLICATION_NAME: post-service
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_SERVER}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: always
+    networks:
+      - post-service-network
+
+networks:
+  post-service-network: 
+
+volumes:
+  postgres-volume:
