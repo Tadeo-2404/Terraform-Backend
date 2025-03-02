@@ -21,7 +21,6 @@ services:
   post:
     container_name: post-service
     build:
-      context: ../post-service
       dockerfile: Dockerfile
     ports:
       - "8090:8090"
