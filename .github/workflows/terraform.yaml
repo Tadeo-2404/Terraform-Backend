@@ -4,13 +4,13 @@ on:
  push:
    branches:
    - main
-   paths:
-   - terraform/**
+   paths-ignore:
+   - terraform/kubernetes
  pull_request:
    branches:
    - main
-   paths:
-   - terraform/**
+   paths-ignore:
+   - terraform/kubernetes
 
 jobs:
  terraform:
