@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-service
+  template:
+    metadata:
+      labels:
+        app: post-service
+    spec:
+      containers:
+      - name: post-service
+        image: pelusa0303/post-service:latest
+        ports:
+        - containerPort: 8090
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: post-service-secrets
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: post-service-secrets
+              key: POSTGRES_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: post-service-secrets
+              key: DB_NAME
+        - name: DB_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: post-service-secrets
+              key: DB_SERVER
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: post-service-secrets
+              key: DB_PORT
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: post-service-config
+              key: SERVER_PORT
