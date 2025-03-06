@@ -15,6 +15,14 @@ spec:
       containers:
       - name: post-service
         image: pelusa0303/post-service:latest
+        imagePullPolicy: Always
+        resources:
+           requests:
+             cpu: "500m"
+             memory: "50Mi" 
+           limits:
+             cpu: "800m"
+             memory: "2Gi" 
         ports:
         - containerPort: 8090
         env:
