@@ -5,28 +5,23 @@ import org.springframework.http.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
-public class BadRequestException extends RuntimeException {
-    private final String errorMessage;
-    private final String information;
-    private final HttpStatus httpStatus;
+public class BadRequestException extends RuntimeException{
+    private BadRequestCodeValidation badRequestCodeValidation;
+    private HttpStatus httpStatus;
 
-    public BadRequestException(BadRequestExceptionCode errorCode, HttpStatus httpStatus) {
-        super(errorCode.getErrorMessage());
-        this.errorMessage = errorCode.getErrorMessage();
-        this.information = errorCode.getInformation();
+    @Getter
+    @AllArgsConstructor
+    public static enum BadRequestCodeValidation {
+        ERR_OO1("Incorrect data", "Incorrect data");
+        String message;
+        String informacion;
+    }
+    
+    public BadRequestException(BadRequestCodeValidation badRequestCodeValidation, HttpStatus httpStatus) {
+        super(badRequestCodeValidation.getMessage());
+        this.badRequestCodeValidation = badRequestCodeValidation;
         this.httpStatus = httpStatus;
     }
-
-    @AllArgsConstructor
-    @Getter
-    public enum BadRequestExceptionCode {
-        ERROR1("Incorrect data", "incorrect data");
-
-        private final String errorMessage;
-        private final String information;
-    }
 }
-

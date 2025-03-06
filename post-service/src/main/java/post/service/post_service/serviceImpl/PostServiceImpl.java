@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import post.service.post_service.exceptions.BadRequestException;
-import post.service.post_service.exceptions.BadRequestException.BadRequestExceptionCode;
+import post.service.post_service.exceptions.BadRequestException.BadRequestCodeValidation;
 import post.service.post_service.models.PostModel;
 import post.service.post_service.models.ResponseHttp;
 import post.service.post_service.repository.PostRepository;
@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
         responseHttp.setMessage("Success");
 
         if(postCreateRequest == null) {
-            throw new BadRequestException(BadRequestExceptionCode.ERROR1, HttpStatus.OK);
+            throw new BadRequestException(BadRequestCodeValidation.ERR_OO1, HttpStatus.OK);
         }
 
         postRepository.save(new PostModel(1L, postCreateRequest.getTitle(), postCreateRequest.getDescription(), postCreateRequest.getDate(), postCreateRequest.getCategory()));
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
         responseHttp.setMessage("Success");
 
         if(postID == null) {
-            throw new BadRequestException(BadRequestExceptionCode.ERROR1, HttpStatus.OK);
+            throw new BadRequestException(BadRequestCodeValidation.ERR_OO1, HttpStatus.OK);
         }
 
         Optional<PostModel> searched = postRepository.findById(postID);
