@@ -15,11 +15,11 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_instance" "post-ec2" {
+resource "aws_instance" "post_ec2" {
   ami           = var.ami
   instance_type = var.instance_type
 
-  depends_on = [aws_internet_gateway.post-igw]
+  depends_on = [aws_internet_gateway.post_igw]
 
   tags = {
     Name = var.instance_name

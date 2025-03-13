@@ -1,6 +1,6 @@
 //AWS VARIABLES
 variable "instance_name" {
-  description = "post-ec2"
+  description = "post_ec2"
   type        = string
 }
 
@@ -21,7 +21,7 @@ variable "ami" {
 
 //VPC
 variable "aws_vpc_name" {
-  description = "post-vpc"
+  description = "post_vpc"
   type = string
 }
 
@@ -32,7 +32,7 @@ variable "aws_vpc_cidr_block" {
 
 //SUBNETS
 variable "aws_public_subnet_name" {
-  description = "post-public-subnet"
+  description = "post_public_subnet"
   type = string
 }
 
@@ -42,7 +42,7 @@ variable "aws_public_subnet_cidr_block" {
 }
 
 variable "aws_private_subnet_name" {
-  description = "post-private-subnet"
+  description = "post_private_subnet"
   type = string
 }
 
