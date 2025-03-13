@@ -1,3 +1,5 @@
+# modules/aws/main.tf
+
 terraform {
   required_providers {
     aws = {
@@ -10,12 +12,14 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
-resource "aws_instance" "terraform-backend" {
-  ami           = "ami-08b5b3a93ed654d19" #amazon linux 
-  instance_type = "t2.micro"
+resource "aws_instance" "post-ec2" {
+  ami           = var.ami
+  instance_type = var.instance_type
+
+  depends_on = [aws_internet_gateway.post-igw]
 
   tags = {
     Name = var.instance_name

@@ -1,26 +1,26 @@
 resource "kubernetes_deployment" "post-serivce" {
   metadata {
-    name = "post-service"
+    name = var.kubernetes_app_name
   }
 
   spec {
     replicas = 1
     selector {
       match_labels = {
-        "app" = "post-service"
+        "app" = var.kubernetes_app_name
       }
     }
 
     template {
       metadata {
         labels = {
-          "app" = "post-service"
+          "app" = var.kubernetes_app_name
         }
       }
 
       spec {
         container {
-          name              = "post-service"
+          name              = var.kubernetes_app_name
           image             = "pelusa0303/post-service:latest"
           image_pull_policy = "Always"
           resources {

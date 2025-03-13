@@ -1,68 +1,24 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0"
-    }
-  }
+# main.tf
+module "aws" {
+  source        = "./modules/aws"
+  instance_name = var.instance_name
+  instance_type = var.instance_type
+  ami           = var.ami
+  aws_region    = var.aws_region
+  aws_vpc_name = var.aws_vpc_name
+  aws_vpc_cidr_block = var.aws_vpc_cidr_block
+  aws_public_subnet_name = var.aws_public_subnet_name
+  aws_public_subnet_cidr_block = var.aws_public_subnet_cidr_block
+  aws_private_subnet_name = var.aws_private_subnet_name
+  aws_private_subnet_cidr_block = var.aws_private_subnet_cidr_block
 }
 
-provider "docker" {
-  registry_auth {
-    address = "index.docker.io"
-    username = var.docker_username
-    password = var.docker_password
-  }
-}
-
-resource "docker_network" "app_network" {
-  name = "app-network"
-}
-
-# PostgreSQL Container
-resource "docker_image" "postgres" {
-  name = "postgres:latest"
-}
-
-resource "docker_container" "postgres" {
-  name  = "postgres-db"
-  image = docker_image.postgres.image_id
-  env = [
-    "POSTGRES_USER=${var.db_user}",
-    "POSTGRES_PASSWORD=${var.db_password}",
-    "POSTGRES_DB=${var.db_name}"
-  ]
-  ports {
-    internal = 5432
-    external = 5432
-  }
-
-  networks_advanced {
-    name = docker_network.app_network.name
-  }
-}
-
-# Spring Boot post_service container
-resource "docker_image" "post_service" {
-  name = "${var.docker_username}/post-service:latest"
-}
-
-resource "docker_container" "post_service" {
-  name  = "post_service"
-  image = docker_image.post_service.image_id
-  env = [
-    "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/${var.db_name}",
-    "SPRING_DATASOURCE_USERNAME=${var.db_user}",
-    "SPRING_DATASOURCE_PASSWORD=${var.db_password}",
-    "SPRING_PROFILES_ACTIVE=prod"    
-  ]
-  depends_on = [docker_container.postgres]
-  ports {
-    internal = 8090
-    external = 8090
-  }
-
-  networks_advanced {
-    name = docker_network.app_network.name
-  }
+module "docker_container" {
+  source          = "./modules/docker"
+  docker_password = var.db_password
+  db_name         = var.db_name
+  db_user         = var.db_user
+  db_password     = var.docker_password
+  docker_username = var.docker_username
+  docker_port     = var.docker_port
 }
