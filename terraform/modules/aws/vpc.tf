@@ -10,7 +10,7 @@ resource "aws_vpc" "post_vpc" {
 
 //Creates a public subnet
 resource "aws_subnet" "post_public_subnet" {
-  vpc_id            = aws_vpc.post_vpc
+  vpc_id            = aws_vpc.post_vpc.id
   cidr_block        = var.aws_public_subnet_cidr_block
   availability_zone = var.aws_region
   tags = {
@@ -20,7 +20,7 @@ resource "aws_subnet" "post_public_subnet" {
 
 //Creates a private subnet
 resource "aws_subnet" "post_private_subnet" {
-  vpc_id            = aws_vpc.post_vpc
+  vpc_id            = aws_vpc.post_vpc.id
   cidr_block        = var.aws_private_subnet_cidr_block
   availability_zone = var.aws_region
   tags = {
@@ -51,7 +51,7 @@ resource "aws_route_table" "public_route_table" {
 resource "aws_route" "public_route" {
   route_table_id         = aws_route_table.public_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.post_igw
+  gateway_id             = aws_internet_gateway.post_igw.id
 }
 
 //Associates the subnet to the route
@@ -109,5 +109,5 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
   security_group_id = aws_security_group.allow_tls.id
   cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" 
+  ip_protocol       = "-1"
 }
