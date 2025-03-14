@@ -18,6 +18,7 @@ provider "aws" {
 resource "aws_instance" "post_ec2" {
   ami           = var.ami
   instance_type = var.instance_type
+  availability_zone = var.aws_az
 
   depends_on = [aws_internet_gateway.post_igw]
 

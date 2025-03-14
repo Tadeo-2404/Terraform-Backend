@@ -10,6 +10,12 @@ variable "aws_region" {
   description = "aws_region"
 }
 
+variable "aws_az" {
+  default = "us-east-1a"
+  type        = string
+  description = "aws_availability zone"
+}
+
 variable "instance_type" {
   default = "t2.micro"
   type        = string
