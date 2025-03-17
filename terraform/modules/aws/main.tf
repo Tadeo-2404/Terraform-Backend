@@ -19,10 +19,16 @@ resource "aws_instance" "post_ec2" {
   ami               = local.aws_instance_ami
   instance_type     = local.aws_instance_type
   availability_zone = data.aws_availability_zones.available.names[var.az_index]
-
-  depends_on = [aws_internet_gateway.post_igw]
+  key_name = aws_key_pair.tfkey.key_name
+  vpc_security_group_ids = [aws_security_group.post_sg.id]
+  subnet_id = aws_subnet.post_public_subnet.id
 
   tags = {
     Name = local.aws_instance_name
   }
+}
+
+resource "aws_key_pair" "tfkey" {
+  key_name = local.aws_keypair_name
+  public_key = file("tfkey.pub")
 }

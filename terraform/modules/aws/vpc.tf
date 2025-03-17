@@ -2,7 +2,6 @@
 resource "aws_vpc" "post_vpc" {
   cidr_block           = var.aws_vpc_cidr_block
   enable_dns_hostnames = true
-  enable_dns_support   = true
   tags = {
     Name = local.aws_vpc_name
   }
@@ -13,6 +12,8 @@ resource "aws_subnet" "post_public_subnet" {
   vpc_id            = aws_vpc.post_vpc.id
   cidr_block        = var.aws_public_subnet_cidr_block
   availability_zone = data.aws_availability_zones.available.names[var.az_index]
+  
+  map_public_ip_on_launch = true  
   tags = {
     Name = local.aws_public_subnet_name
   }
@@ -28,6 +29,16 @@ resource "aws_subnet" "post_private_subnet" {
   }
 }
 
+resource "aws_network_acl_association" "post_public_subnet_acl_association" {
+  subnet_id = aws_subnet.post_public_subnet.id
+  network_acl_id = aws_network_acl.post_acl.id
+}
+
+resource "aws_network_acl_association" "post_private_subnet_acl_association" {
+  subnet_id      = aws_subnet.post_private_subnet.id
+  network_acl_id = aws_network_acl.post_acl.id
+}
+
 //Creates an Internet Gateway
 resource "aws_internet_gateway" "post_igw" {
   vpc_id = aws_vpc.post_vpc.id
@@ -40,7 +51,6 @@ resource "aws_internet_gateway" "post_igw" {
 //Creates a routing table
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.post_vpc.id
-
 
   tags = {
     Name = local.aws_route_table_public_name
@@ -88,7 +98,7 @@ resource "aws_network_acl" "post_acl" {
   }
 }
 
-resource "aws_security_group" "allow_tls" {
+resource "aws_security_group" "post_sg" {
   name        = local.aws_security_group_name
   description = local.aws_security_group_description
   vpc_id      = aws_vpc.post_vpc.id
@@ -98,16 +108,16 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv4         = aws_vpc.post_vpc.cidr_block
+resource "aws_vpc_security_group_ingress_rule" "post_sg_ingress" {
+  security_group_id = aws_security_group.post_sg.id
+  cidr_ipv4         = local.aws_vpc_security_group_ingress_rule_cdir
   from_port         = local.aws_vpc_security_group_ingress_rule_from_port
   ip_protocol       = local.aws_vpc_security_group_ingress_rule_ip_protocol
   to_port           = local.aws_vpc_security_group_ingress_rule_to_port
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
+resource "aws_vpc_security_group_egress_rule" "post_sg_egress" {
+  security_group_id = aws_security_group.post_sg.id
   cidr_ipv4         = local.aws_vpc_security_group_egress_rule_cidr_ipv4
   ip_protocol       = local.aws_vpc_security_group_egress_rule_ip_protocol
 }

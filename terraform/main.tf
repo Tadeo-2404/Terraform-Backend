@@ -1,10 +1,9 @@
 # main.tf
 module "aws" {
-  source        = "./modules/aws"
-  aws_region = var.aws_region
-  aws_az = var.aws_az
-  aws_vpc_cidr_block = var.aws_vpc_cidr_block
-  aws_public_subnet_cidr_block = var.aws_public_subnet_cidr_block
+  source                        = "./modules/aws"
+  aws_region                    = var.aws_region
+  aws_vpc_cidr_block            = var.aws_vpc_cidr_block
+  aws_public_subnet_cidr_block  = var.aws_public_subnet_cidr_block
   aws_private_subnet_cidr_block = var.aws_private_subnet_cidr_block
 }
 

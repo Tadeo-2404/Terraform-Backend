@@ -12,18 +12,18 @@ variable "aws_az" {
 //VPC
 variable "aws_vpc_cidr_block" {
   description = "192.168.100.0/24"
-  type = string
+  type        = string
 }
 
 //SUBNETS
 variable "aws_public_subnet_cidr_block" {
   description = "192.168.100.0/25"
-  type = string
+  type        = string
 }
 
 variable "aws_private_subnet_cidr_block" {
   description = "192.168.100.128/25"
-  type = string
+  type        = string
 }
 
 //DOCKER VARIABLES

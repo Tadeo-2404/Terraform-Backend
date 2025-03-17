@@ -60,17 +60,17 @@ output "network_acl_id" {
 
 output "security_group_id" {
   description = "The ID of the security group"
-  value       = aws_security_group.allow_tls.id
+  value       = aws_security_group.post_sg.id
 }
 
 output "security_group_ingress_rule_id" {
   description = "The ID of the security group ingress rule"
-  value       = aws_vpc_security_group_ingress_rule.allow_tls_ipv4.id
+  value       = aws_vpc_security_group_ingress_rule.post_sg_ingress.id
 }
 
 output "security_group_egress_rule_id" {
   description = "The ID of the security group egress rule"
-  value       = aws_vpc_security_group_egress_rule.allow_all_traffic_ipv4.id
+  value       = aws_vpc_security_group_egress_rule.post_sg_egress.id
 }
 
 output "route_table_association_id" {

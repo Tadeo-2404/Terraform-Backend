@@ -1,13 +1,13 @@
 variable "aws_region" {
   description = "AWS Region"
-  type        = string
-  default     = data.aws_region.current.name
+  type = string
+  default = "us-east-1"
 }
 
 variable "az_index" {
   description = "Index of the AZ to use"
   type        = number
-  default     = 0 # Selects the first AZ by default
+  default     = 0
 }
 
 //VPC

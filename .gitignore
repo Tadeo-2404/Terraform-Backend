@@ -11,6 +11,8 @@ target/
 terraform.tfstate.backup
 terraform.tfstate
 terraform.tfstate.lock.info
+tfkey
+tfkey.pub
 
 ### STS ###
 .apt_generated
