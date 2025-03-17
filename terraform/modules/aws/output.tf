@@ -1,3 +1,12 @@
+
+output "aws_region" {
+  value = data.aws_region.current.name
+}
+
+output "aws_azs" {
+  value = data.aws_availability_zones.available.names
+}
+
 output "instance_id" {
   description = "ID of the EC2 instance"
   value       = aws_instance.post_ec2.id
@@ -20,7 +29,7 @@ output "instance_type" {
 
 output "vpc_id" {
   description = "vpc_id"
-  value = aws_vpc.post_vpc.id
+  value       = aws_vpc.post_vpc.id
 }
 
 output "public_subnet_id" {
