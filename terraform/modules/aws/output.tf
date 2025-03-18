@@ -65,15 +65,15 @@ output "security_group_id" {
 
 output "security_group_ingress_rule_id" {
   description = "The ID of the security group ingress rule"
-  value       = aws_vpc_security_group_ingress_rule.post_sg_ingress.id
+  value       = aws_security_group.post_sg.ingress
 }
 
 output "security_group_egress_rule_id" {
   description = "The ID of the security group egress rule"
-  value       = aws_vpc_security_group_egress_rule.post_sg_egress.id
+  value       = aws_security_group.post_sg.egress
 }
 
 output "route_table_association_id" {
   description = "The ID of the route table association"
-  value       = aws_route_table_association.route_table_association.id
+  value       = aws_route_table_association.public_route_table_association.id
 }
