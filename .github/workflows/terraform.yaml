@@ -1,11 +1,6 @@
 name: "Terraform CI/CD Github"
  
 on:
- push:
-   branches:
-   - main
-   paths-ignore:
-   - terraform/kubernetes
  pull_request:
    branches:
    - main
