@@ -17,15 +17,3 @@ output "instance_type" {
   description = "Instance Type"
   value       = module.aws.instance_type
 }
-
-output "postgres_container_id" {
-  value = module.docker_container.postgres_container_id
-}
-
-output "post_service_id" {
-  value = module.docker_container.post_service_id
-}
-
-output "post_service_host" {
-  value = module.docker_container.post_service_host
-}
