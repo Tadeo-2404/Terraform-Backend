@@ -56,7 +56,7 @@ resource "aws_route_table_association" "public_route_table_association" {
 //ACLS Inbounds and Outbounds
 resource "aws_network_acl" "post_acl" {
   vpc_id     = aws_vpc.post_vpc.id
-  subnet_ids = [aws_subnet.post_public_subnet.id, aws_subnet.post_private_subnet.id]
+  subnet_ids = [aws_subnet.post_public_subnet.id]
 
   ingress {
     protocol   = local.aws_network_acl_tcp_protocol

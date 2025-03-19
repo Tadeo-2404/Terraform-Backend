@@ -1,11 +1,11 @@
 output "ec2_public_ip" {
-  value = module.ec2.public_ip
+  value = aws_instance.post_ec2.public_ip
 }
 
-output "ec2_subnet_id" {
-  value = module.ec2.subnet_id
+output "ec2_name" {
+  value = aws_instance.post_ec2.key_name
 }
 
-output "ec2_security_group_id" {
-  value = module.ec2.security_group_id
+output "ec2_type" {
+  value = aws_instance.post_ec2.ami
 }
