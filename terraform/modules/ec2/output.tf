@@ -3,7 +3,7 @@ output "ec2_public_ip" {
 }
 
 output "ec2_name" {
-  value = aws_instance.post_ec2.key_name
+  value = aws_instance.post_ec2
 }
 
 output "ec2_type" {

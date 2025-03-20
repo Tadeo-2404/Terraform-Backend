@@ -16,8 +16,8 @@ resource "aws_subnet" "post_public_subnet" {
   vpc_id            = aws_vpc.post_vpc.id
   cidr_block        = local.aws_public_subnet_cidr_block
   availability_zone = var.aws_az
-
   map_public_ip_on_launch = true
+
   tags = {
     Name = local.aws_public_subnet_name
   }
@@ -48,7 +48,6 @@ resource "aws_route_table" "public_route_table" {
 
 //Associates the subnet to the route
 resource "aws_route_table_association" "public_route_table_association" {
-  depends_on     = [aws_subnet.post_public_subnet, aws_route_table.public_route_table]
   subnet_id      = aws_subnet.post_public_subnet.id
   route_table_id = aws_route_table.public_route_table.id
 }
@@ -58,6 +57,7 @@ resource "aws_network_acl" "post_acl" {
   vpc_id     = aws_vpc.post_vpc.id
   subnet_ids = [aws_subnet.post_public_subnet.id]
 
+  # Allow inbound SSH only from a specific IP range
   ingress {
     protocol   = local.aws_network_acl_tcp_protocol
     rule_no    = local.aws_network_acl_ingress_ssh_rule_n
@@ -67,16 +67,36 @@ resource "aws_network_acl" "post_acl" {
     to_port    = local.aws_network_acl_ingress_ssh_to_port
   }
 
-  egress {
+  # Allow inbound HTTP & HTTPS (if hosting a web service)
+  ingress {
     protocol   = local.aws_network_acl_tcp_protocol
-    rule_no    = local.aws_network_acl_egress_ssh_rule_n
-    action     = local.aws_network_acl_egress_ssh_action
-    cidr_block = local.aws_network_acl_egress_ssh_cidr_block
-    from_port  = local.aws_network_acl_egress_ssh_from_port
-    to_port    = local.aws_network_acl_egress_ssh_to_port
+    rule_no    = local.aws_network_acl_ingress_http_rule_n
+    action     = local.aws_network_acl_ingress_http_action
+    cidr_block = local.aws_network_acl_ingress_http_cidr_block
+    from_port  = local.aws_network_acl_ingress_http_from_port
+    to_port    = local.aws_network_acl_ingress_http_to_port
+  }
+
+  ingress {
+    protocol   = local.aws_network_acl_tcp_protocol
+    rule_no    = local.aws_network_acl_ingress_https_rule_n
+    action     = local.aws_network_acl_ingress_https_action
+    cidr_block = local.aws_network_acl_ingress_https_cidr_block
+    from_port  = local.aws_network_acl_ingress_https_from_port
+    to_port    = local.aws_network_acl_ingress_https_to_port
+  }
+
+  # Allow all outbound traffic (default safe option)
+  egress {
+    protocol   = local.aws_network_acl_egress_protocol
+    rule_no    = local.aws_network_acl_egress_rule_n
+    action     = local.aws_network_acl_egress_action
+    cidr_block = local.aws_network_acl_egress_cidr_block
+    from_port  = local.aws_network_acl_egress_from_port
+    to_port    = local.aws_network_acl_egress_to_port
   }
 
   tags = {
-    Name = local.aws_network_acl_tag
+    Name = "post_acl"
   }
 }
