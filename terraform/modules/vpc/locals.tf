@@ -11,6 +11,9 @@ locals {
   aws_route_table_public_name = "public_route_table"
   aws_route_table_public_cidr = "0.0.0.0/0"
   aws_public_route_cidr       = "0.0.0.0/0"
+  aws_route_table_private_name = "private_route_table"
+  aws_route_table_private_cidr = "0.0.0.0/0"
+  aws_private_route_cidr       = "0.0.0.0/0"
   //AWS NETWORK ACL
   aws_network_acl_tag                   = "post_acl"
   aws_network_acl_tcp_protocol          = "tcp"

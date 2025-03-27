@@ -23,6 +23,33 @@ resource "aws_subnet" "post_public_subnet" {
   }
 }
 
+resource "aws_subnet" "post_private_subnet" {
+  vpc_id            = aws_vpc.post_vpc.id
+  cidr_block        = local.aws_private_subnet_cidr_block
+  availability_zone = var.aws_az
+
+  tags = {
+    Name = local.aws_private_subnet_name
+  }
+}
+
+//Creates Elastic IP
+resource "aws_eip" "nat_elastic_ip" {
+  domain = "vpc"
+}
+
+//Creates  a NAT Gateway for private subnet
+resource "aws_nat_gateway" "nat_gateway" {
+  depends_on = [aws_eip.nat_elastic_ip]
+  allocation_id = aws_eip.nat_elastic_ip.id
+  subnet_id     = aws_subnet.post_private_subnet.id
+
+  tags = {
+    Name = "nat_gateway"
+  }
+}
+
+
 //Creates an Internet Gateway
 resource "aws_internet_gateway" "post_igw" {
   vpc_id = aws_vpc.post_vpc.id
@@ -46,10 +73,30 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.post_vpc.id
+  depends_on = [ aws_nat_gateway.nat_gateway ]
+
+  route {
+    cidr_block = local.aws_route_table_private_cidr
+    gateway_id = aws_internet_gateway.post_igw.id
+  }
+
+  tags = {
+    Name = local.aws_route_table_private_name
+  }
+}
+
 //Associates the subnet to the route
 resource "aws_route_table_association" "public_route_table_association" {
   subnet_id      = aws_subnet.post_public_subnet.id
   route_table_id = aws_route_table.public_route_table.id
+}
+
+
+resource "aws_route_table_association" "private_route_table_association" {
+  subnet_id      = aws_subnet.post_private_subnet.id
+  route_table_id = aws_route_table.private_route_table.id
 }
 
 //ACLS Inbounds and Outbounds
