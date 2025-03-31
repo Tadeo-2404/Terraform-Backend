@@ -9,3 +9,9 @@ variable "aws_az" {
   type        = string
   default     = "us-east-1a"
 }
+
+variable "aws_az_backup" {
+  description = "AWS AZ"
+  type        = string
+  default     = "us-east-1b"
+}

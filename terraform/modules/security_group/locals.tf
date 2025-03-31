@@ -19,8 +19,8 @@ locals {
   aws_security_group_ingress_pg_to_port   = 5432
   aws_security_group_ingress_pg_protocol  = "tcp"
   //AWS SG EGRESS POSTGRES RDS
-  aws_security_group_egress_pg_from_port = 0
-  aws_security_group_egress_pg_to_port   = 0 
-  aws_security_group_egress_pg_protocol  = "-1"
+  aws_security_group_egress_pg_from_port   = 0
+  aws_security_group_egress_pg_to_port     = 0
+  aws_security_group_egress_pg_protocol    = "-1"
   aws_security_group_egress_pg_cidr_blocks = ["0.0.0.0/0"]
 }

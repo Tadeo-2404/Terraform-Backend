@@ -13,9 +13,9 @@ resource "aws_vpc" "post_vpc" {
 
 //Creates a public subnet
 resource "aws_subnet" "post_public_subnet" {
-  vpc_id            = aws_vpc.post_vpc.id
-  cidr_block        = local.aws_public_subnet_cidr_block
-  availability_zone = var.aws_az
+  vpc_id                  = aws_vpc.post_vpc.id
+  cidr_block              = local.aws_public_subnet_cidr_block
+  availability_zone       = var.aws_az
   map_public_ip_on_launch = true
 
   tags = {
@@ -33,6 +33,25 @@ resource "aws_subnet" "post_private_subnet" {
   }
 }
 
+resource "aws_subnet" "post_backed_up_private_subnet" {
+  vpc_id            = aws_vpc.post_vpc.id
+  cidr_block        = local.aws_private_subnet_backup_cidr_block
+  availability_zone = var.aws_az_backup
+
+  tags = {
+    Name = local.aws_private_subnet_backup_name
+  }
+}
+
+resource "aws_db_subnet_group" "db_subnet_group_pg" {
+  name       = "db_subnet_group_pg"
+  subnet_ids = [aws_subnet.post_private_subnet.id, aws_subnet.post_backed_up_private_subnet.id]
+
+  tags = {
+    Name = "Postgres subnet group"
+  }
+}
+
 //Creates Elastic IP
 resource "aws_eip" "nat_elastic_ip" {
   domain = "vpc"
@@ -40,7 +59,7 @@ resource "aws_eip" "nat_elastic_ip" {
 
 //Creates  a NAT Gateway for private subnet
 resource "aws_nat_gateway" "nat_gateway" {
-  depends_on = [aws_eip.nat_elastic_ip]
+  depends_on    = [aws_eip.nat_elastic_ip]
   allocation_id = aws_eip.nat_elastic_ip.id
   subnet_id     = aws_subnet.post_private_subnet.id
 
@@ -74,8 +93,8 @@ resource "aws_route_table" "public_route_table" {
 }
 
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.post_vpc.id
-  depends_on = [ aws_nat_gateway.nat_gateway ]
+  vpc_id     = aws_vpc.post_vpc.id
+  depends_on = [aws_nat_gateway.nat_gateway]
 
   route {
     cidr_block = local.aws_route_table_private_cidr

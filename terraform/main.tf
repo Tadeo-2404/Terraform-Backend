@@ -2,11 +2,9 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.16"
+      version = "~> 5.93.0"
     }
   }
-
-  required_version = ">= 1.2.0"
 }
 
 module "vpc" {
@@ -25,5 +23,14 @@ module "ec2" {
   aws_region        = var.aws_region
   aws_az            = var.aws_az
   subnet_id         = module.vpc.public_subnet_id
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.ec2_sg_id
+}
+
+
+module "rds" {
+  source                 = "./modules/rds"
+  db_subnet_group_name   = module.vpc.private_subnet_group_pg_name
+  vpc_security_group_ids = module.security_group.postgres_sg_id
+  db_username            = var.db_username
+  db_password            = var.db_password
 }

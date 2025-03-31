@@ -30,16 +30,16 @@ resource "aws_security_group" "post_sg" {
 }
 
 resource "aws_security_group" "postgres_sg" {
-  vpc_id      = var.aws_vpc_id
+  vpc_id = var.aws_vpc_id
 
   ingress {
     from_port       = local.aws_security_group_ingress_pg_from_port
     to_port         = local.aws_security_group_ingress_pg_to_port
     protocol        = local.aws_security_group_ingress_pg_protocol
-    security_groups = [aws_security_group.post_sg.id] 
+    security_groups = [aws_security_group.post_sg.id]
   }
 
-    egress {
+  egress {
     from_port   = local.aws_security_group_egress_pg_from_port
     to_port     = local.aws_security_group_egress_pg_to_port
     protocol    = local.aws_security_group_egress_pg_protocol

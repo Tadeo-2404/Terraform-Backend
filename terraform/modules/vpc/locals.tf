@@ -2,22 +2,24 @@ locals {
   aws_vpc_name                  = "post_vpc"
   aws_public_subnet_name        = "post_public_subnet"
   aws_private_subnet_name       = "post_private_subnet"
+  aws_private_subnet_backup_name       = "post_backup_private_subnet"
   aws_vpc_cidr_block            = "10.0.0.0/16"
   aws_public_subnet_cidr_block  = "10.0.1.0/24"
   aws_private_subnet_cidr_block = "10.0.2.0/24"
+  aws_private_subnet_backup_cidr_block = "10.0.3.0/24"
   //AWS INTERNET GATEWAY
   aws_internet_gateway_name = "post-igw"
   //AWS ROUTE TABLE
-  aws_route_table_public_name = "public_route_table"
-  aws_route_table_public_cidr = "0.0.0.0/0"
-  aws_public_route_cidr       = "0.0.0.0/0"
+  aws_route_table_public_name  = "public_route_table"
+  aws_route_table_public_cidr  = "0.0.0.0/0"
+  aws_public_route_cidr        = "0.0.0.0/0"
   aws_route_table_private_name = "private_route_table"
   aws_route_table_private_cidr = "0.0.0.0/0"
   aws_private_route_cidr       = "0.0.0.0/0"
   //AWS NETWORK ACL
-  aws_network_acl_tag                   = "post_acl"
-  aws_network_acl_tcp_protocol          = "tcp"
-  aws_network_acl_egress_protocol       = "-1"
+  aws_network_acl_tag               = "post_acl"
+  aws_network_acl_tcp_protocol      = "tcp"
+  aws_network_acl_egress_protocol   = "-1"
   aws_network_acl_egress_rule_n     = 200
   aws_network_acl_egress_from_port  = 0
   aws_network_acl_egress_to_port    = 0
