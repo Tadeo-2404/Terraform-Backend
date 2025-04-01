@@ -33,7 +33,7 @@ resource "aws_subnet" "post_private_subnet" {
   }
 }
 
-resource "aws_subnet" "post_backed_up_private_subnet" {
+resource "aws_subnet" "post_backed_up_az_private_subnet" {
   vpc_id            = aws_vpc.post_vpc.id
   cidr_block        = local.aws_private_subnet_backup_cidr_block
   availability_zone = var.aws_az_backup
@@ -45,7 +45,7 @@ resource "aws_subnet" "post_backed_up_private_subnet" {
 
 resource "aws_db_subnet_group" "db_subnet_group_pg" {
   name       = "db_subnet_group_pg"
-  subnet_ids = [aws_subnet.post_private_subnet.id, aws_subnet.post_backed_up_private_subnet.id]
+  subnet_ids = [aws_subnet.post_private_subnet.id, aws_subnet.post_backed_up_az_private_subnet.id]
 
   tags = {
     Name = "Postgres subnet group"
@@ -61,7 +61,7 @@ resource "aws_eip" "nat_elastic_ip" {
 resource "aws_nat_gateway" "nat_gateway" {
   depends_on    = [aws_eip.nat_elastic_ip]
   allocation_id = aws_eip.nat_elastic_ip.id
-  subnet_id     = aws_subnet.post_private_subnet.id
+  subnet_id     = aws_subnet.post_public_subnet.id
 
   tags = {
     Name = "nat_gateway"
@@ -98,7 +98,7 @@ resource "aws_route_table" "private_route_table" {
 
   route {
     cidr_block = local.aws_route_table_private_cidr
-    gateway_id = aws_internet_gateway.post_igw.id
+    gateway_id = aws_nat_gateway.nat_gateway.id
   }
 
   tags = {
@@ -118,6 +118,12 @@ resource "aws_route_table_association" "private_route_table_association" {
   route_table_id = aws_route_table.private_route_table.id
 }
 
+resource "aws_route_table_association" "private_backup_route_table_association" {
+  subnet_id      = aws_subnet.post_backed_up_az_private_subnet.id
+  route_table_id = aws_route_table.private_route_table.id
+}
+
+
 //ACLS Inbounds and Outbounds
 resource "aws_network_acl" "post_acl" {
   vpc_id     = aws_vpc.post_vpc.id
@@ -125,7 +131,7 @@ resource "aws_network_acl" "post_acl" {
 
   # Allow inbound SSH only from a specific IP range
   ingress {
-    protocol   = local.aws_network_acl_tcp_protocol
+    protocol   = local.aws_network_acl_ingress_icmp_protocol
     rule_no    = local.aws_network_acl_ingress_ssh_rule_n
     action     = local.aws_network_acl_ingress_ssh_action
     cidr_block = local.aws_network_acl_ingress_ssh_cidr_block
@@ -135,7 +141,7 @@ resource "aws_network_acl" "post_acl" {
 
   # Allow inbound HTTP & HTTPS (if hosting a web service)
   ingress {
-    protocol   = local.aws_network_acl_tcp_protocol
+    protocol   = local.aws_network_acl_ingress_http_protocol
     rule_no    = local.aws_network_acl_ingress_http_rule_n
     action     = local.aws_network_acl_ingress_http_action
     cidr_block = local.aws_network_acl_ingress_http_cidr_block
@@ -144,7 +150,7 @@ resource "aws_network_acl" "post_acl" {
   }
 
   ingress {
-    protocol   = local.aws_network_acl_tcp_protocol
+    protocol   = local.aws_network_acl_ingress_https_protocol
     rule_no    = local.aws_network_acl_ingress_https_rule_n
     action     = local.aws_network_acl_ingress_https_action
     cidr_block = local.aws_network_acl_ingress_https_cidr_block

@@ -15,6 +15,16 @@ resource "aws_security_group" "post_sg" {
     cidr_blocks = [local.aws_security_group_ingress_ssh_cdir]
   }
 
+  # Allow ICMP (ping) traffic
+  ingress {
+    description = "Allow ICMP traffic"
+    protocol    = local.aws_security_group_ingress_icmp_protocol
+    from_port   = local.aws_security_group_ingress_icmp_from_port
+    to_port     = local.aws_security_group_ingress_icmp_to_port
+    cidr_blocks = [local.aws_security_group_ingress_icmp_cdir]
+  }
+
+
   # Egress Rule - Allow all outbound traffic
   egress {
     description = "Allow all outbound traffic"
