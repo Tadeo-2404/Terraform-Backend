@@ -26,11 +26,12 @@ locals {
   aws_network_acl_egress_action     = "allow"
   aws_network_acl_egress_cidr_block = "0.0.0.0/0"
   //AWS NETWORK ACL INGRESS icmp
-  aws_network_acl_ingress_icmp_protocol  = "icmp"
-  aws_network_acl_ingress_icmp_rule_n    = 100
-  aws_network_acl_ingress_icmp_from_port = -1
-  aws_network_acl_ingress_icmp_to_port   = -1
-  aws_network_acl_ingress_icmp_action    = "allow"
+  aws_network_acl_ingress_icmp_protocol   = "icmp"
+  aws_network_acl_ingress_icmp_rule_n     = 100
+  aws_network_acl_ingress_icmp_from_port  = 0
+  aws_network_acl_ingress_icmp_to_port    = 0
+  aws_network_acl_ingress_icmp_action     = "allow"
+  aws_network_acl_ingress_icmp_cidr_block = "0.0.0.0/0"
   //AWS NETWORK ACL INGRESS SSH
   aws_network_acl_ingress_ssh_rule_n     = 110
   aws_network_acl_ingress_ssh_from_port  = 22

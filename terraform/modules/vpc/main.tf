@@ -132,6 +132,16 @@ resource "aws_network_acl" "post_acl" {
   # Allow inbound SSH only from a specific IP range
   ingress {
     protocol   = local.aws_network_acl_ingress_icmp_protocol
+    rule_no    = local.aws_network_acl_ingress_icmp_rule_n
+    action     = local.aws_network_acl_ingress_icmp_action
+    cidr_block = local.aws_network_acl_ingress_icmp_cidr_block
+    from_port  = local.aws_network_acl_ingress_icmp_from_port
+    to_port    = local.aws_network_acl_ingress_icmp_to_port
+  }
+
+  # Allow inbound SSH only from a specific IP range
+  ingress {
+    protocol   = local.aws_network_acl_tcp_protocol
     rule_no    = local.aws_network_acl_ingress_ssh_rule_n
     action     = local.aws_network_acl_ingress_ssh_action
     cidr_block = local.aws_network_acl_ingress_ssh_cidr_block
